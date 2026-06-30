@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
 
-const GameBoard = () => {
+const GameBoard = ({activePlayer, setActivePlayer, handlePlayerClick, gameBoard, setGameBoard}) => {
     
-    const initialBoard = [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-    ]
     
-    const [gameBoard, setGameBoard] = useState(initialBoard)
-
-    function handlePlayerClick(rowIndex, colIndex){
+    
+    function updateGameBoard(rowIndex, colIndex){
         setGameBoard((prevGameBoard) =>{ 
             const updatedGameBoard = prevGameBoard.map((innerArray) => [...innerArray])
-            updatedGameBoard[rowIndex][colIndex] = "X"
+            updatedGameBoard[rowIndex][colIndex] = activePlayer
             return updatedGameBoard;
         })
     }
+
+    function handleSelectedSquare(rowIndex, colIndex){
+        updateGameBoard(rowIndex, colIndex)
+        handlePlayerClick(rowIndex, colIndex)        
+    }
+
+
   return (
     <div id='game-board'>
         {
@@ -25,7 +26,7 @@ const GameBoard = () => {
                     {
                         row.map((col, colIndex) => {
                             return <li key={colIndex}>
-                                <button onClick={() => handlePlayerClick(rowIndex, colIndex)}> {col}</button>
+                                <button onClick={() => handleSelectedSquare(rowIndex, colIndex)}> {col}</button>
                             </li>
                         })
                     }
